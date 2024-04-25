@@ -10,6 +10,8 @@ import 'package:speech_to_text/speech_to_text.dart';
 class ProductFormController extends GetxController{
   GlobalKey<FormState> formState = GlobalKey<FormState>();
   TextEditingController descriptionController = TextEditingController();
+  TextEditingController barcodeController = TextEditingController();
+  TextEditingController nameController = TextEditingController();
   final SpeechToText _speech = SpeechToText();
   final FlutterTts _flutterTts = FlutterTts();
 
@@ -84,20 +86,6 @@ class ProductFormController extends GetxController{
     }
   }
 
-  void saveProduct() async {
-    if (formState.currentState!.validate()) {
-      isLoading.value = true;
-      product.update((val) {
-        val!.description = descriptionController.text;
-        val.image = selectedImagePath.value;
-      });
-
-      await Future.delayed(const Duration(seconds: 2));
-      isLoading.value = false;
-      Get.back();
-    }
-  }
-
   void selectImage(){
     showModalBottomSheet(
       context: Get.context!,
@@ -140,5 +128,11 @@ class ProductFormController extends GetxController{
     }else{
       Get.rawSnackbar(message: "Ninguna imagen seleccionada".tr);
     }
+  }
+
+  void clearForm(){
+    descriptionController.clear();
+    barcodeController.clear();
+    nameController.clear();
   }
 }

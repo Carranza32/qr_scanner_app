@@ -65,7 +65,7 @@ class ProductDetailScreen extends StatelessWidget {
               child: Stack(
                 children: [
                   MobileScanner(
-                    fit: BoxFit.contain,
+                    fit: BoxFit.cover,
                     controller: cameraController,
                     onDetect: (capture) => controller.onDetect(capture.barcodes),
                   ),
@@ -95,15 +95,12 @@ class ProductDetailScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Hero(
-                    tag: controller.selectedProduct.value.id!,
-                    child: Obx(() => ListTile(
-                      leading: CircleAvatar(
-                        child: Image.asset('assets/product.png')
-                      ),
-                      title: Text(controller.selectedProduct.value.barcode!, style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                        fontWeight: FontWeight.bold,
-                      )),
+                  ListTile(
+                    leading: CircleAvatar(
+                      child: Image.asset('assets/product.png')
+                    ),
+                    title: Text(controller.selectedProduct.value.barcode!, style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                      fontWeight: FontWeight.bold,
                     )),
                   ),
 
@@ -115,15 +112,15 @@ class ProductDetailScreen extends StatelessWidget {
                         Text("Contador", style: Theme.of(context).textTheme.titleMedium),
                         const SizedBox(height: 10),
 
-                        FilledButton.tonal(
+                        Obx(() => FilledButton.tonal(
                           child: Text(controller.counter.value.toString(), style: Theme.of(context).textTheme.titleMedium),
                           onPressed: () => {},
-                        )
+                        ))
                       ],
                     ),
                   ),
 
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
 
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -133,6 +130,22 @@ class ProductDetailScreen extends StatelessWidget {
                           icon: const Icon(Icons.save),
                           label: const Text('Guardar'),
                           onPressed: () => controller.saveCounter(),
+                          style: ButtonStyle(
+                            padding: MaterialStateProperty.all(const EdgeInsets.symmetric(vertical: 15))
+                          ),
+                        ),
+                      ),
+
+                      const SizedBox(width: 20),
+
+                      Expanded(
+                        child: FilledButton.tonalIcon(
+                          icon: const Icon(Icons.delete),
+                          label: const Text('Reiniciar'),
+                          onPressed: () => controller.resetCounter(),
+                          style: ButtonStyle(
+                            padding: MaterialStateProperty.all(const EdgeInsets.symmetric(vertical: 15))
+                          ),
                         ),
                       ),
                     ],

@@ -34,5 +34,6 @@ class ProductDetailController extends GetxController{
   void setSelectedProduct(ProductModel product){
     selectedProduct.value = product;
     counter.value = product.quantity ?? 0;
+    update();
   }
 }
