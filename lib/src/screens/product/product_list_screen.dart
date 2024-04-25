@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:qr_scanner_app/src/controllers/ProductDetailController.dart';
 import 'package:animations/animations.dart';
+import 'package:qr_scanner_app/src/models/product_model.dart';
 import 'package:qr_scanner_app/src/screens/product/product_form_screen.dart';
 
 import '../../controllers/ProductListController.dart';
@@ -34,8 +35,26 @@ class ProductListScreen extends StatelessWidget {
                 isFullScreen: true,
                 viewHintText: 'Busca un producto',
                 barHintText: 'Busca un producto',
-                suggestionsBuilder: (context, text) {
+                suggestionsBuilder: (context, searchController) {
+                  List<ProductModel> suggestions = controller.products.where((element) => element.barcode!.contains(searchController.text)).toList();
+
                   return [
+                    for (var suggestion in suggestions)
+                      ListTile(
+                        title: Text(suggestion.barcode!),
+                        subtitle: Text(suggestion.name!),
+                        onTap: () {
+                          productDetailController.setSelectedProduct(suggestion);
+                    
+                          Get.toNamed('/product-detail')?.then((value) {
+                            ProductModel? found = controller.products.firstWhereOrNull((element) => element.id == productDetailController.selectedProduct.value.id);
+
+                            if(found != null){
+                              controller.products[controller.products.indexOf(found)] = productDetailController.selectedProduct.value;
+                            }
+                          });
+                        },
+                      ),
                   ];
                 }
               ),
