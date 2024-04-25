@@ -12,7 +12,7 @@ class ProductDetailScreen extends StatelessWidget {
   ProductDetailScreen({super.key});
 
   MobileScannerController cameraController = MobileScannerController(
-    detectionSpeed: DetectionSpeed.noDuplicates
+    detectionSpeed: DetectionSpeed.noDuplicates,
   );
 
   ProductDetailController controller = Get.put(ProductDetailController());
